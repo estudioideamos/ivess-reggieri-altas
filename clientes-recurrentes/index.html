@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido de Reposición | Ivess Reggieri</title>
+  <meta
+    name="description"
+    content="Clientes de Ivess Reggieri: confirmá tus datos con teléfono, elegí productos y enviá tu pedido de reposición en minutos."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <script>
+    window.APP_CONFIG = window.APP_CONFIG || {};
+    window.APP_CONFIG.customerScriptUrl = "https://script.google.com/macros/s/AKfycbwe0Xi2v9wv40apO00lVX-9em2Ic_CHtJ8lyk6sofYuLo0EzNHjsQQTC54bKrixbF_1LQ/exec";
+  </script>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page-shell page-shell--customers">
+    <section class="hero-panel">
+      <div class="hero-topbar">
+        <img
+          class="brand-logo"
+          src="../assets/images/logo-ivess-reggieri.png"
+          alt="Logo Ivess Reggieri"
+        >
+        <div class="brand-chip">Clientes activos</div>
+      </div>
+
+      <div class="hero-copy-block">
+        <p class="eyebrow">Pedido inteligente</p>
+        <h1>Ingres&aacute; tu tel&eacute;fono y ped&iacute; tus bidones en segundos.</h1>
+        <p class="hero-copy">
+          Dise&ntilde;ado para clientes recurrentes: primero validamos tus datos
+          autom&aacute;ticamente y despu&eacute;s eleg&iacute;s cantidades y productos
+          con una experiencia clara, r&aacute;pida y premium.
+        </p>
+      </div>
+
+      <div class="hero-showcase hero-showcase--customers">
+        <div class="hero-showcase__content">
+          <span class="hero-showcase__label">Flujo optimizado</span>
+          <strong>Menos carga manual, m&aacute;s velocidad de compra.</strong>
+          <p>Con un solo dato (tel&eacute;fono), el sistema recupera la informaci&oacute;n del cliente y acelera el pedido.</p>
+          <div class="hero-showcase__tags">
+            <span>m&aacute;s simple</span>
+            <span>m&aacute;s r&aacute;pido</span>
+            <span>m&aacute;s conversi&oacute;n</span>
+          </div>
+        </div>
+        <img class="hero-showcase__image" src="../assets/images/bidon-12l.jpg" alt="Bidones Ivess Reggieri">
+      </div>
+
+      <div class="hero-metrics">
+        <article class="hero-metric">
+          <span class="hero-metric__value">Validaci&oacute;n autom&aacute;tica</span>
+          <span class="hero-metric__label">Datos recuperados desde tu base de clientes.</span>
+        </article>
+        <article class="hero-metric">
+          <span class="hero-metric__value">Pedido guiado</span>
+          <span class="hero-metric__label">Selecci&oacute;n de productos y cantidades con total estimado.</span>
+        </article>
+        <article class="hero-metric">
+          <span class="hero-metric__value">Entrega directa</span>
+          <span class="hero-metric__label">Solicitud lista para gesti&oacute;n comercial y log&iacute;stica.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="form-panel" aria-labelledby="form-title">
+      <div class="progress-head">
+        <div>
+          <p class="progress-label">Paso <span id="step-index">1</span> de 3</p>
+          <h2 id="form-title">Pedido de reposici&oacute;n</h2>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <span id="progress-bar"></span>
+        </div>
+        <div class="stepper stepper--3">
+          <button class="stepper__item is-active" data-go-step="0" type="button">
+            <span class="stepper__number">1</span>
+            <span class="stepper__label">Cliente</span>
+          </button>
+          <button class="stepper__item" data-go-step="1" type="button">
+            <span class="stepper__number">2</span>
+            <span class="stepper__label">Productos</span>
+          </button>
+          <button class="stepper__item" data-go-step="2" type="button">
+            <span class="stepper__number">3</span>
+            <span class="stepper__label">Confirmar</span>
+          </button>
+        </div>
+      </div>
+
+      <form id="reorder-form" novalidate>
+        <section class="step is-active" data-step="0">
+          <h3>Busc&aacute; tu cuenta por tel&eacute;fono</h3>
+          <p class="step-copy">Ingres&aacute; el n&uacute;mero registrado y validamos autom&aacute;ticamente tus datos para continuar.</p>
+
+          <div class="customer-lookup">
+            <label class="field">
+              <span>C&oacute;digo de &aacute;rea</span>
+              <input id="lookup-area-code" type="tel" placeholder="260" inputmode="numeric" required>
+            </label>
+            <label class="field">
+              <span>Celular</span>
+              <input id="lookup-phone" type="tel" placeholder="4123456" inputmode="numeric" required>
+            </label>
+            <button id="lookup-button" class="button button--lookup" type="button">Buscar mis datos</button>
+          </div>
+
+          <p id="lookup-message" class="lookup-message" aria-live="polite"></p>
+
+          <div id="customer-card" class="customer-card is-hidden">
+            <h4>Datos encontrados</h4>
+            <div class="field-grid">
+              <label class="field">
+                <span>Nombre</span>
+                <input id="customer-first-name" type="text" readonly>
+              </label>
+              <label class="field">
+                <span>Apellido</span>
+                <input id="customer-last-name" type="text" readonly>
+              </label>
+              <label class="field field--full">
+                <span>Email</span>
+                <input id="customer-email" type="text" readonly>
+              </label>
+              <label class="field field--full">
+                <span>Direcci&oacute;n</span>
+                <input id="customer-address" type="text" readonly>
+              </label>
+              <label class="field">
+                <span>Localidad</span>
+                <input id="customer-city" type="text" readonly>
+              </label>
+              <label class="field">
+                <span>Provincia</span>
+                <input id="customer-province" type="text" readonly>
+              </label>
+            </div>
+          </div>
+
+          <label class="checkbox">
+            <input id="customer-confirmed" type="checkbox" required>
+            <span>Confirmo que los datos corresponden al cliente que est&aacute; realizando el pedido.</span>
+          </label>
+        </section>
+
+        <section class="step" data-step="1">
+          <h3>Eleg&iacute; tus productos</h3>
+          <p class="step-copy">Ajust&aacute; cantidades y visualiz&aacute; el total estimado para este pedido de reposici&oacute;n.</p>
+
+          <div class="plan-grid">
+            <label class="plan-card">
+              <input type="radio" name="plan" data-label="Bid&oacute;n Retornable 12 L" data-unit-price="8900" checked>
+              <span class="plan-card__badge">Reposici&oacute;n hogar</span>
+              <span class="plan-card__media">
+                <img src="../assets/images/bidon-12l.jpg" alt="Bid&oacute;n 12 litros">
+              </span>
+              <span class="plan-card__title">Bid&oacute;n Retornable 12 L</span>
+              <span class="plan-card__meta">Ideal para consumo diario en hogares y estudios.</span>
+              <span class="plan-card__unit-price">Desde $8.900 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="1" inputmode="numeric">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total estimado</span>
+                <span class="plan-card__price" data-total-output>$8.900</span>
+              </div>
+            </label>
+
+            <label class="plan-card">
+              <input type="radio" name="plan" data-label="Bid&oacute;n Retornable 20 L" data-unit-price="11900">
+              <span class="plan-card__badge">Reposici&oacute;n oficina</span>
+              <span class="plan-card__media">
+                <img src="../assets/images/bidon-12l.jpg" alt="Bid&oacute;n 20 litros">
+              </span>
+              <span class="plan-card__title">Bid&oacute;n Retornable 20 L</span>
+              <span class="plan-card__meta">Mayor volumen para oficinas y espacios de alto consumo.</span>
+              <span class="plan-card__unit-price">Desde $11.900 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="2" inputmode="numeric">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total estimado</span>
+                <span class="plan-card__price" data-total-output>$23.800</span>
+              </div>
+            </label>
+
+            <label class="plan-card">
+              <input type="radio" name="plan" data-label="Bid&oacute;n Bajo Sodio 12 L" data-unit-price="9600">
+              <span class="plan-card__badge">Cuidado especial</span>
+              <span class="plan-card__media">
+                <img src="../assets/images/bidon-12l-sodio.png" alt="Bid&oacute;n bajo sodio">
+              </span>
+              <span class="plan-card__title">Bid&oacute;n Bajo Sodio 12 L</span>
+              <span class="plan-card__meta">Opci&oacute;n recomendada para clientes con requerimientos espec&iacute;ficos.</span>
+              <span class="plan-card__unit-price">Desde $9.600 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="1" inputmode="numeric">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total estimado</span>
+                <span class="plan-card__price" data-total-output>$9.600</span>
+              </div>
+            </label>
+          </div>
+        </section>
+
+        <section class="step" data-step="2">
+          <h3>Confirm&aacute; el pedido</h3>
+          <p class="step-copy">Revis&aacute; la informaci&oacute;n del cliente y el producto elegido antes de enviar.</p>
+          <div id="summary" class="summary-card" aria-live="polite"></div>
+
+          <label class="checkbox">
+            <input id="terms" type="checkbox" required>
+            <span>Acepto el env&iacute;o de este pedido para coordinaci&oacute;n comercial y log&iacute;stica.</span>
+          </label>
+        </section>
+
+        <p id="form-message" class="form-message" aria-live="polite"></p>
+
+        <div class="form-actions">
+          <button id="back-button" class="button button--ghost" type="button">Volver</button>
+          <button id="next-button" class="button" type="button">Continuar</button>
+          <button id="submit-button" class="button button--accent is-hidden" type="submit">Enviar pedido</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="./src/main.js"></script>
+</body>
+</html>
