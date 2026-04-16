@@ -745,6 +745,63 @@ h2 {
   font-size: 0.95rem;
 }
 
+.address-autocomplete {
+  position: relative;
+}
+
+.address-suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 30;
+  max-height: 268px;
+  overflow-y: auto;
+  border: 1px solid rgba(18, 67, 88, 0.18);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(18, 67, 88, 0.14);
+}
+
+.address-suggestions.is-hidden {
+  display: none;
+}
+
+.address-suggestions__item {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(18, 67, 88, 0.09);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  padding: 11px 12px;
+  font: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+}
+
+.address-suggestions__item:last-child {
+  border-bottom: 0;
+}
+
+.address-suggestions__item:hover,
+.address-suggestions__item.is-active,
+.address-suggestions__item:focus-visible {
+  background: rgba(223, 245, 251, 0.7);
+  outline: none;
+}
+
+.address-suggestions__main {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.address-suggestions__secondary {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {

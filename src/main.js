@@ -9,6 +9,10 @@ const nextButton = document.querySelector("#next-button");
 const submitButton = document.querySelector("#submit-button");
 const stepperItems = Array.from(document.querySelectorAll("[data-go-step]"));
 const planCards = Array.from(document.querySelectorAll(".plan-card"));
+const addressInput = document.querySelector("#address");
+const cityInput = document.querySelector("#city");
+const provinceInput = document.querySelector("#province");
+const addressSuggestions = document.querySelector("#address-suggestions");
 const nextLabels = [
   "Continuar",
   "Ver entrega",
@@ -43,8 +47,13 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
 });
 
 let currentStep = 0;
+let suggestionItems = [];
+let activeSuggestionIndex = -1;
+let addressDebounceTimer = null;
+let addressAbortController = null;
 
 initializePlanCards();
+initializeAddressAutocomplete();
 updateAllPlanCards();
 renderStep();
 
@@ -361,4 +370,199 @@ function escapeHtml(value) {
 
 function formatCurrency(value) {
   return currencyFormatter.format(value);
+}
+
+function initializeAddressAutocomplete() {
+  if (!addressInput || !addressSuggestions) {
+    return;
+  }
+
+  addressInput.addEventListener("input", () => {
+    const query = normalizeValue(addressInput.value);
+
+    clearTimeout(addressDebounceTimer);
+
+    if (query.length < 3) {
+      clearAddressSuggestions();
+      return;
+    }
+
+    addressDebounceTimer = window.setTimeout(() => {
+      fetchAddressSuggestions(query);
+    }, 260);
+  });
+
+  addressInput.addEventListener("keydown", (event) => {
+    if (!suggestionItems.length || addressSuggestions.classList.contains("is-hidden")) {
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestionItems.length;
+      updateActiveSuggestion();
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      activeSuggestionIndex =
+        activeSuggestionIndex <= 0
+          ? suggestionItems.length - 1
+          : activeSuggestionIndex - 1;
+      updateActiveSuggestion();
+      return;
+    }
+
+    if (event.key === "Enter" && activeSuggestionIndex >= 0) {
+      event.preventDefault();
+      applyAddressSuggestion(suggestionItems[activeSuggestionIndex]);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      clearAddressSuggestions();
+    }
+  });
+
+  addressInput.addEventListener("blur", () => {
+    window.setTimeout(() => {
+      clearAddressSuggestions();
+    }, 120);
+  });
+}
+
+async function fetchAddressSuggestions(query) {
+  if (addressAbortController) {
+    addressAbortController.abort();
+  }
+
+  addressAbortController = new AbortController();
+
+  const endpoint =
+    `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=ar&limit=6&q=${encodeURIComponent(query)}`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "GET",
+      signal: addressAbortController.signal,
+    });
+
+    if (!response.ok) {
+      clearAddressSuggestions();
+      return;
+    }
+
+    const results = await response.json();
+    renderAddressSuggestions(Array.isArray(results) ? results : []);
+  } catch (error) {
+    if (error.name === "AbortError") {
+      return;
+    }
+
+    clearAddressSuggestions();
+  }
+}
+
+function renderAddressSuggestions(items) {
+  suggestionItems = items;
+  activeSuggestionIndex = -1;
+
+  if (!items.length) {
+    clearAddressSuggestions();
+    return;
+  }
+
+  addressSuggestions.innerHTML = items
+    .map((item, index) => {
+      const addressParts = parseAddressParts(item);
+
+      return `
+        <button class="address-suggestions__item" type="button" data-suggestion-index="${index}">
+          <span class="address-suggestions__main">${escapeHtml(addressParts.main)}</span>
+          <span class="address-suggestions__secondary">${escapeHtml(addressParts.secondary)}</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  addressSuggestions.classList.remove("is-hidden");
+
+  Array.from(addressSuggestions.querySelectorAll("[data-suggestion-index]")).forEach(
+    (button) => {
+      button.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+
+        const index = Number(button.dataset.suggestionIndex);
+        const selectedItem = suggestionItems[index];
+
+        if (selectedItem) {
+          applyAddressSuggestion(selectedItem);
+        }
+      });
+    },
+  );
+}
+
+function updateActiveSuggestion() {
+  const buttons = Array.from(
+    addressSuggestions.querySelectorAll("[data-suggestion-index]"),
+  );
+
+  buttons.forEach((button, index) => {
+    button.classList.toggle("is-active", index === activeSuggestionIndex);
+  });
+}
+
+function applyAddressSuggestion(item) {
+  const addressParts = parseAddressParts(item);
+
+  addressInput.value = addressParts.main;
+
+  if (cityInput && addressParts.city) {
+    cityInput.value = addressParts.city;
+  }
+
+  if (provinceInput && addressParts.province) {
+    provinceInput.value = addressParts.province;
+  }
+
+  clearAddressSuggestions();
+}
+
+function parseAddressParts(item) {
+  const address = item.address || {};
+  const street =
+    address.road ||
+    address.pedestrian ||
+    address.residential ||
+    address.path ||
+    "";
+  const number = address.house_number || "";
+  const city =
+    address.city ||
+    address.town ||
+    address.village ||
+    address.suburb ||
+    address.county ||
+    "";
+  const province = address.state || "";
+  const main = [street, number].filter(Boolean).join(" ").trim();
+
+  return {
+    main: main || item.display_name.split(",").slice(0, 2).join(",").trim(),
+    secondary: [city, province, "Argentina"].filter(Boolean).join(", "),
+    city,
+    province,
+  };
+}
+
+function clearAddressSuggestions() {
+  suggestionItems = [];
+  activeSuggestionIndex = -1;
+
+  if (addressSuggestions) {
+    addressSuggestions.innerHTML = "";
+    addressSuggestions.classList.add("is-hidden");
+  }
 }
