@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altas Automaticas | Ivess Reggieri</title>
+  <meta
+    name="description"
+    content="Solicita tu alta de servicio en Ivess Reggieri con un formulario simple, rapido y guiado."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-panel">
+      <div class="brand-chip">Ivess Reggieri</div>
+      <p class="eyebrow">Altas automaticas</p>
+      <h1>Tu servicio de agua empieza en pocos minutos.</h1>
+      <p class="hero-copy">
+        Un flujo pensado para altas rapidas, validacion de cobertura y coordinacion
+        simple para hogares, oficinas y barrios cerrados.
+      </p>
+
+      <div class="hero-grid" aria-label="Beneficios del servicio">
+        <article class="hero-card">
+          <span class="hero-card__kicker">Cobertura</span>
+          <strong>Validamos si llegamos a tu direccion antes de continuar.</strong>
+        </article>
+        <article class="hero-card">
+          <span class="hero-card__kicker">Atencion</span>
+          <strong>Te contactamos por WhatsApp para agilizar el alta y la entrega.</strong>
+        </article>
+        <article class="hero-card">
+          <span class="hero-card__kicker">Flexibilidad</span>
+          <strong>Planes para casa, empresas y consumo frecuente.</strong>
+        </article>
+      </div>
+
+      <div class="hero-note">
+        <p>Referencia visual inspirada en el flujo de altas de IVESS, pero adaptada para tu cliente.</p>
+      </div>
+    </section>
+
+    <section class="form-panel" aria-labelledby="form-title">
+      <div class="progress-head">
+        <div>
+          <p class="progress-label">Paso <span id="step-index">1</span> de 5</p>
+          <h2 id="form-title">Alta de servicio</h2>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <span id="progress-bar"></span>
+        </div>
+        <div class="stepper" aria-label="Pasos del formulario">
+          <button class="stepper__item is-active" data-go-step="0" type="button">
+            <span class="stepper__number">1</span>
+            <span class="stepper__label">Servicio</span>
+          </button>
+          <button class="stepper__item" data-go-step="1" type="button">
+            <span class="stepper__number">2</span>
+            <span class="stepper__label">Contacto</span>
+          </button>
+          <button class="stepper__item" data-go-step="2" type="button">
+            <span class="stepper__number">3</span>
+            <span class="stepper__label">Entrega</span>
+          </button>
+          <button class="stepper__item" data-go-step="3" type="button">
+            <span class="stepper__number">4</span>
+            <span class="stepper__label">Plan</span>
+          </button>
+          <button class="stepper__item" data-go-step="4" type="button">
+            <span class="stepper__number">5</span>
+            <span class="stepper__label">Confirmar</span>
+          </button>
+        </div>
+      </div>
+
+      <form id="signup-form" novalidate>
+        <section class="step is-active" data-step="0">
+          <h3>&iquest;Donde queres recibir el servicio?</h3>
+          <p class="step-copy">Elegimos primero el tipo de alta para personalizar el resto del formulario.</p>
+
+          <div class="choice-grid">
+            <label class="choice-card">
+              <input type="radio" name="serviceType" value="hogar" checked>
+              <span>En mi casa / departamento</span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="serviceType" value="empresa">
+              <span>En mi empresa / oficina</span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="serviceType" value="barrio">
+              <span>Vivo en un barrio cerrado</span>
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <label class="field field--full">
+              <span>Direccion</span>
+              <input id="address" name="address" type="text" placeholder="Ej: Av. Libertador 2450" required>
+            </label>
+            <label class="field">
+              <span>Localidad</span>
+              <input id="city" name="city" type="text" placeholder="San Rafael" required>
+            </label>
+            <label class="field">
+              <span>Provincia</span>
+              <input id="province" name="province" type="text" placeholder="Mendoza" required>
+            </label>
+          </div>
+
+          <label class="checkbox">
+            <input id="coverage" name="coverage" type="checkbox" required>
+            <span>Confirmo que deseo validar cobertura en este domicilio.</span>
+          </label>
+        </section>
+
+        <section class="step" data-step="1">
+          <h3>Tus datos de contacto</h3>
+          <p class="step-copy">Necesitamos esta informacion para coordinar el alta y el primer envio.</p>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Nombre</span>
+              <input id="firstName" name="firstName" type="text" placeholder="Nombre" required>
+            </label>
+            <label class="field">
+              <span>Apellido</span>
+              <input id="lastName" name="lastName" type="text" placeholder="Apellido" required>
+            </label>
+            <label class="field">
+              <span>Codigo de area</span>
+              <input id="areaCode" name="areaCode" type="tel" placeholder="260" inputmode="numeric" required>
+            </label>
+            <label class="field">
+              <span>Celular</span>
+              <input id="phone" name="phone" type="tel" placeholder="4123456" inputmode="numeric" required>
+            </label>
+            <label class="field field--full">
+              <span>Email</span>
+              <input id="email" name="email" type="email" placeholder="nombre@empresa.com" required>
+            </label>
+          </div>
+
+          <label class="checkbox">
+            <input id="whatsappConsent" name="whatsappConsent" type="checkbox" required>
+            <span>Acepto recibir contacto por WhatsApp sobre el alta, entregas y novedades del servicio.</span>
+          </label>
+        </section>
+
+        <section class="step" data-step="2">
+          <h3>Condiciones de entrega</h3>
+          <p class="step-copy">Con esto dejamos listo el circuito logistico y la mejor franja horaria.</p>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Tipo de inmueble</span>
+              <select id="propertyType" name="propertyType" required>
+                <option value="">Seleccionar</option>
+                <option value="casa">Casa</option>
+                <option value="departamento">Departamento</option>
+                <option value="oficina">Oficina</option>
+                <option value="local">Local comercial</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Piso / oficina</span>
+              <input id="unit" name="unit" type="text" placeholder="Opcional">
+            </label>
+            <label class="field">
+              <span>Franja horaria</span>
+              <select id="timeSlot" name="timeSlot" required>
+                <option value="">Seleccionar</option>
+                <option value="manana">Manana</option>
+                <option value="tarde">Tarde</option>
+                <option value="completo">Horario comercial completo</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Frecuencia estimada</span>
+              <select id="frequency" name="frequency" required>
+                <option value="">Seleccionar</option>
+                <option value="semanal">Semanal</option>
+                <option value="quincenal">Quincenal</option>
+                <option value="mensual">Mensual</option>
+              </select>
+            </label>
+            <label class="field field--full">
+              <span>Indicaciones para el repartidor</span>
+              <textarea id="notes" name="notes" rows="4" placeholder="Porton, recepcion, referencias, seguridad, etc."></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="step" data-step="3">
+          <h3>Elegi tu producto inicial</h3>
+          <p class="step-copy">Tomamos estos valores como referencia inicial y luego el equipo comercial ajusta el alta segun tu consumo real.</p>
+
+          <div class="plan-grid">
+            <label class="plan-card">
+              <input
+                type="radio"
+                name="plan"
+                value="basico"
+                data-label="Bidon Hogar 12 L"
+                data-price="$8.900"
+                checked
+              >
+              <span class="plan-card__badge">Precio ejemplo</span>
+              <span class="plan-card__media">
+                <img
+                  src="./assets/images/bidon-12l.jpg"
+                  alt="Bidon de agua retornable"
+                >
+              </span>
+              <span class="plan-card__title">Bidon Hogar 12 L</span>
+              <span class="plan-card__meta">1 bidon retornable ideal para primeras entregas en casa.</span>
+              <span class="plan-card__price">$8.900</span>
+            </label>
+            <label class="plan-card">
+              <input
+                type="radio"
+                name="plan"
+                value="familiar"
+                data-label="Pack Familiar 2 bidones de 12 L"
+                data-price="$15.900"
+              >
+              <span class="plan-card__badge">Precio ejemplo</span>
+              <span class="plan-card__media">
+                <img
+                  src="./assets/images/bidon-12l.jpg"
+                  alt="Bidon de agua retornable"
+                >
+              </span>
+              <span class="plan-card__title">Pack Familiar 2 x 12 L</span>
+              <span class="plan-card__meta">Pensado para hogares con consumo frecuente y mejor rotacion.</span>
+              <span class="plan-card__price">$15.900</span>
+            </label>
+            <label class="plan-card">
+              <input
+                type="radio"
+                name="plan"
+                value="corporativo"
+                data-label="Pack Oficina 3 bidones de 12 L"
+                data-price="$22.900"
+              >
+              <span class="plan-card__badge">Precio ejemplo</span>
+              <span class="plan-card__media">
+                <img
+                  src="./assets/images/bidon-12l.jpg"
+                  alt="Bidon de agua retornable"
+                >
+              </span>
+              <span class="plan-card__title">Pack Oficina 3 x 12 L</span>
+              <span class="plan-card__meta">Una opcion inicial para equipos, recepciones y oficinas chicas.</span>
+              <span class="plan-card__price">$22.900</span>
+            </label>
+          </div>
+
+          <p class="plan-note">Precios de ejemplo sujetos a zona de entrega, disponibilidad y frecuencia del servicio.</p>
+
+          <label class="checkbox">
+            <input id="cooler" name="cooler" type="checkbox">
+            <span>Quiero que me contacten tambien por dispenser o equipamiento adicional.</span>
+          </label>
+        </section>
+
+        <section class="step" data-step="4">
+          <h3>Confirmacion final</h3>
+          <p class="step-copy">Revisa el resumen y envia la solicitud para que el equipo de Ivess Reggieri te contacte.</p>
+
+          <div id="summary" class="summary-card" aria-live="polite"></div>
+
+          <label class="checkbox">
+            <input id="terms" name="terms" type="checkbox" required>
+            <span>Acepto el tratamiento de mis datos para gestionar esta solicitud comercial.</span>
+          </label>
+        </section>
+
+        <p id="form-message" class="form-message" aria-live="polite"></p>
+
+        <div class="form-actions">
+          <button id="back-button" class="button button--ghost" type="button">Volver</button>
+          <button id="next-button" class="button" type="button">Continuar</button>
+          <button id="submit-button" class="button button--accent is-hidden" type="submit">Enviar solicitud</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="./src/main.js"></script>
+</body>
+</html>
