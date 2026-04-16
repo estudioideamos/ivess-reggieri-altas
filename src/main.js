@@ -8,9 +8,17 @@ const backButton = document.querySelector("#back-button");
 const nextButton = document.querySelector("#next-button");
 const submitButton = document.querySelector("#submit-button");
 const stepperItems = Array.from(document.querySelectorAll("[data-go-step]"));
+const planCards = Array.from(document.querySelectorAll(".plan-card"));
+const currencyFormatter = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS",
+  maximumFractionDigits: 0,
+});
 
 let currentStep = 0;
 
+initializePlanCards();
+updateAllPlanCards();
 renderStep();
 
 stepperItems.forEach((item) => {
@@ -80,6 +88,8 @@ function renderStep() {
   nextButton.classList.toggle("is-hidden", currentStep === steps.length - 1);
   submitButton.classList.toggle("is-hidden", currentStep !== steps.length - 1);
 
+  updateAllPlanCards();
+
   if (currentStep === steps.length - 1) {
     renderSummary();
   }
@@ -127,6 +137,21 @@ function validateStep(stepNumber) {
     }
   }
 
+  if (stepNumber === 3) {
+    const selectedPlanInput = form.querySelector('input[name="plan"]:checked');
+    const selectedQuantityInput = selectedPlanInput
+      ?.closest(".plan-card")
+      ?.querySelector("[data-qty-input]");
+
+    if (!selectedQuantityInput || getQuantityValue(selectedQuantityInput) < 1) {
+      setFieldError(
+        selectedQuantityInput,
+        "Selecciona al menos una unidad para continuar.",
+      );
+      firstInvalidField ??= selectedQuantityInput;
+    }
+  }
+
   if (firstInvalidField) {
     formMessage.textContent = "Hay campos pendientes o incompletos en este paso.";
     firstInvalidField.focus();
@@ -164,7 +189,7 @@ function renderSummary() {
       </div>
       <div>
         <dt>Producto</dt>
-        <dd>${data.plan}${data.planPrice ? ` - ${data.planPrice}` : ""}</dd>
+        <dd>${data.plan} x ${data.planQuantity}${data.planPrice ? ` - ${data.planPrice}` : ""}</dd>
       </div>
     </dl>
   `;
@@ -173,6 +198,11 @@ function renderSummary() {
 function getFormData() {
   const data = new FormData(form);
   const selectedPlanInput = form.querySelector('input[name="plan"]:checked');
+  const selectedPlanCard = selectedPlanInput?.closest(".plan-card");
+  const selectedQuantityInput = selectedPlanCard?.querySelector("[data-qty-input]");
+  const planQuantity = getQuantityValue(selectedQuantityInput);
+  const planUnitPrice = Number(selectedPlanInput?.dataset.unitPrice || 0);
+  const planTotal = planUnitPrice * planQuantity;
 
   return {
     serviceType: normalizeValue(data.get("serviceType")),
@@ -187,8 +217,53 @@ function getFormData() {
     propertyType: normalizeValue(data.get("propertyType")),
     timeSlot: normalizeValue(data.get("timeSlot")),
     plan: selectedPlanInput?.dataset.label || normalizeValue(data.get("plan")),
-    planPrice: selectedPlanInput?.dataset.price || "",
+    planQuantity,
+    planPrice: planTotal > 0 ? formatCurrency(planTotal) : "",
   };
+}
+
+function initializePlanCards() {
+  planCards.forEach((card) => {
+    const planInput = card.querySelector('input[type="radio"]');
+    const quantityInput = card.querySelector("[data-qty-input]");
+    const quantityButtons = Array.from(card.querySelectorAll("[data-qty-action]"));
+
+    quantityButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const currentValue = getQuantityValue(quantityInput);
+        const delta = button.dataset.qtyAction === "increase" ? 1 : -1;
+        quantityInput.value = String(clamp(currentValue + delta, 1, 12));
+        planInput.checked = true;
+        updateAllPlanCards();
+      });
+    });
+
+    quantityInput.addEventListener("input", () => {
+      quantityInput.value = String(clamp(getQuantityValue(quantityInput), 1, 12));
+      planInput.checked = true;
+      updateAllPlanCards();
+    });
+
+    planInput.addEventListener("change", () => {
+      updateAllPlanCards();
+    });
+  });
+}
+
+function updateAllPlanCards() {
+  planCards.forEach((card) => {
+    const planInput = card.querySelector('input[type="radio"]');
+    const quantityInput = card.querySelector("[data-qty-input]");
+    const totalOutput = card.querySelector("[data-total-output]");
+    const unitPrice = Number(planInput.dataset.unitPrice || 0);
+    const quantity = getQuantityValue(quantityInput);
+
+    if (totalOutput) {
+      totalOutput.textContent = formatCurrency(unitPrice * quantity);
+    }
+  });
 }
 
 function normalizeValue(value) {
@@ -206,4 +281,21 @@ function setFieldError(field, message) {
 
 function clearFieldError(field) {
   field.setCustomValidity("");
+}
+
+function getQuantityValue(input) {
+  if (!input) {
+    return 1;
+  }
+
+  const numericValue = Number(input.value);
+  return Number.isFinite(numericValue) ? numericValue : 1;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function formatCurrency(value) {
+  return currencyFormatter.format(value);
 }

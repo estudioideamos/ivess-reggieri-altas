@@ -19,31 +19,57 @@
 <body>
   <main class="page-shell">
     <section class="hero-panel">
-      <div class="brand-chip">Ivess Reggieri</div>
-      <p class="eyebrow">Altas automaticas</p>
-      <h1>Tu servicio de agua empieza en pocos minutos.</h1>
-      <p class="hero-copy">
-        Un flujo pensado para altas rapidas, validacion de cobertura y coordinacion
-        simple para hogares, oficinas y barrios cerrados.
-      </p>
+      <div class="hero-topbar">
+        <img
+          class="brand-logo"
+          src="./assets/images/logo-ivess-reggieri.png"
+          alt="Logo Ivess Reggieri"
+        >
+        <div class="brand-chip">Entrega programada premium</div>
+      </div>
+
+      <div class="hero-copy-block">
+        <p class="eyebrow">Altas automaticas</p>
+        <h1>Una experiencia de alta clara, premium y lista para convertir.</h1>
+        <p class="hero-copy">
+          Diseñada para que hogares, oficinas y barrios cerrados soliciten sus
+          bidones IVESS Reggieri con una experiencia elegante, guiada y simple.
+        </p>
+      </div>
+
+      <div class="hero-showcase">
+        <div class="hero-showcase__content">
+          <span class="hero-showcase__label">Coleccion principal</span>
+          <strong>Bidones retornables de 12L y 20L con entrega coordinada.</strong>
+          <p>
+            Presentacion visual premium, seleccion de cantidad y una propuesta
+            preparada para vender mejor desde la primera visita.
+          </p>
+        </div>
+        <img
+          class="hero-showcase__image"
+          src="./assets/images/bidon-20l.png"
+          alt="Bidon retornable IVESS Reggieri de 20 litros"
+        >
+      </div>
 
       <div class="hero-grid" aria-label="Beneficios del servicio">
         <article class="hero-card">
           <span class="hero-card__kicker">Cobertura</span>
-          <strong>Validamos si llegamos a tu direccion antes de continuar.</strong>
+          <strong>Validacion de zona y coordinacion de entrega antes de cerrar el alta.</strong>
         </article>
         <article class="hero-card">
-          <span class="hero-card__kicker">Atencion</span>
-          <strong>Te contactamos por WhatsApp para agilizar el alta y la entrega.</strong>
+          <span class="hero-card__kicker">Marca</span>
+          <strong>Uso del logo oficial y assets propios para desplegar sin depender de terceros.</strong>
         </article>
         <article class="hero-card">
-          <span class="hero-card__kicker">Flexibilidad</span>
-          <strong>Planes para casa, empresas y consumo frecuente.</strong>
+          <span class="hero-card__kicker">Conversion</span>
+          <strong>Selector de cantidad, resumen final y un flujo listo para optimizar.</strong>
         </article>
       </div>
 
       <div class="hero-note">
-        <p>Referencia visual inspirada en el flujo de altas de IVESS, pero adaptada para tu cliente.</p>
+        <p>El sitio ya queda preparado para seguir iterando en GitHub y publicar cambios sin tocar el hosting final.</p>
       </div>
     </section>
 
@@ -200,7 +226,7 @@
 
         <section class="step" data-step="3">
           <h3>Elegi tu producto inicial</h3>
-          <p class="step-copy">Tomamos estos valores como referencia inicial y luego el equipo comercial ajusta el alta segun tu consumo real.</p>
+          <p class="step-copy">Selecciona el tipo de bidon y ajusta la cantidad como en un selector comercial. El total es de ejemplo y ayuda a visualizar mejor la eleccion.</p>
 
           <div class="plan-grid">
             <label class="plan-card">
@@ -208,58 +234,85 @@
                 type="radio"
                 name="plan"
                 value="basico"
-                data-label="Bidon Hogar 12 L"
-                data-price="$8.900"
+                data-label="Bidon Retornable 12 L"
+                data-unit-price="8900"
                 checked
               >
-              <span class="plan-card__badge">Precio ejemplo</span>
+              <span class="plan-card__badge">Mas elegido</span>
               <span class="plan-card__media">
                 <img
-                  src="./assets/images/bidon-12l.jpg"
-                  alt="Bidon de agua retornable"
+                  src="./assets/images/bidon-12l.png"
+                  alt="Bidon IVESS Reggieri de 12 litros"
                 >
               </span>
-              <span class="plan-card__title">Bidon Hogar 12 L</span>
-              <span class="plan-card__meta">1 bidon retornable ideal para primeras entregas en casa.</span>
-              <span class="plan-card__price">$8.900</span>
-            </label>
-            <label class="plan-card">
-              <input
-                type="radio"
-                name="plan"
-                value="familiar"
-                data-label="Pack Familiar 2 bidones de 12 L"
-                data-price="$15.900"
-              >
-              <span class="plan-card__badge">Precio ejemplo</span>
-              <span class="plan-card__media">
-                <img
-                  src="./assets/images/bidon-12l.jpg"
-                  alt="Bidon de agua retornable"
-                >
-              </span>
-              <span class="plan-card__title">Pack Familiar 2 x 12 L</span>
-              <span class="plan-card__meta">Pensado para hogares con consumo frecuente y mejor rotacion.</span>
-              <span class="plan-card__price">$15.900</span>
+              <span class="plan-card__title">Bidon Retornable 12 L</span>
+              <span class="plan-card__meta">Agua purificada IVESS Reggieri para hogares, estudios y oficinas pequeñas.</span>
+              <span class="plan-card__unit-price">Desde $8.900 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon retornable 12 litros">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="1" inputmode="numeric" aria-label="Cantidad del bidon retornable 12 litros">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase" aria-label="Aumentar cantidad del bidon retornable 12 litros">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total ejemplo</span>
+                <span class="plan-card__price" data-total-output>$8.900</span>
+              </div>
             </label>
             <label class="plan-card">
               <input
                 type="radio"
                 name="plan"
                 value="corporativo"
-                data-label="Pack Oficina 3 bidones de 12 L"
-                data-price="$22.900"
+                data-label="Bidon Retornable 20 L"
+                data-unit-price="11900"
               >
               <span class="plan-card__badge">Precio ejemplo</span>
               <span class="plan-card__media">
                 <img
-                  src="./assets/images/bidon-12l.jpg"
-                  alt="Bidon de agua retornable"
+                  src="./assets/images/bidon-20l.png"
+                  alt="Bidon IVESS Reggieri de 20 litros"
                 >
               </span>
-              <span class="plan-card__title">Pack Oficina 3 x 12 L</span>
-              <span class="plan-card__meta">Una opcion inicial para equipos, recepciones y oficinas chicas.</span>
-              <span class="plan-card__price">$22.900</span>
+              <span class="plan-card__title">Bidon Retornable 20 L</span>
+              <span class="plan-card__meta">La opcion mas rendidora para oficinas, recepciones y consumos intensivos.</span>
+              <span class="plan-card__unit-price">Desde $11.900 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon retornable 20 litros">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="2" inputmode="numeric" aria-label="Cantidad del bidon retornable 20 litros">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase" aria-label="Aumentar cantidad del bidon retornable 20 litros">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total ejemplo</span>
+                <span class="plan-card__price" data-total-output>$23.800</span>
+              </div>
+            </label>
+            <label class="plan-card">
+              <input
+                type="radio"
+                name="plan"
+                value="baja-sodio"
+                data-label="Bidon Bajo Sodio 12 L"
+                data-unit-price="9600"
+              >
+              <span class="plan-card__badge">Linea saludable</span>
+              <span class="plan-card__media">
+                <img
+                  src="./assets/images/bidon-12l-sodio.png"
+                  alt="Bidon IVESS Reggieri bajo sodio de 12 litros"
+                >
+              </span>
+              <span class="plan-card__title">Bidon Bajo Sodio 12 L</span>
+              <span class="plan-card__meta">Presentacion premium para quienes priorizan un perfil mas liviano de sodio.</span>
+              <span class="plan-card__unit-price">Desde $9.600 por unidad</span>
+              <div class="quantity-picker">
+                <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon bajo sodio 12 litros">-</button>
+                <input class="quantity-picker__input" data-qty-input type="number" min="1" max="12" value="1" inputmode="numeric" aria-label="Cantidad del bidon bajo sodio 12 litros">
+                <button class="quantity-picker__button" type="button" data-qty-action="increase" aria-label="Aumentar cantidad del bidon bajo sodio 12 litros">+</button>
+              </div>
+              <div class="plan-card__footer">
+                <span class="plan-card__price-label">Total ejemplo</span>
+                <span class="plan-card__price" data-total-output>$9.600</span>
+              </div>
             </label>
           </div>
 
