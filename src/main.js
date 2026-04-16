@@ -402,21 +402,17 @@ async function sendLeadToAppsScript(data) {
   };
 
   try {
-    const response = await fetch(appsScriptUrl, {
+    await fetch(appsScriptUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // Apps Script web apps often fail CORS preflight with JSON requests from static sites.
+        // `no-cors` + text payload avoids preflight and allows delivery from GitHub Pages.
+        "Content-Type": "text/plain;charset=utf-8",
       },
       body: JSON.stringify(payload),
-      mode: "cors",
+      mode: "no-cors",
     });
-
-    if (!response.ok) {
-      return { ok: false, error: "request_failed" };
-    }
-
-    const result = await response.json().catch(() => ({ ok: true }));
-    return { ok: result.ok !== false };
+    return { ok: true };
   } catch (_) {
     return { ok: false, error: "network_error" };
   }
