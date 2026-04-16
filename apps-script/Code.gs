@@ -1,5 +1,6 @@
 const SHEET_NAME = "Leads";
-const NOTIFICATION_EMAIL = "tu-email@dominio.com";
+const SPREADSHEET_ID = "1QLG1s6I-MI2pXIR234OIO-Dj-mYBZ9I0jht3Rgod49Y";
+const NOTIFICATION_EMAIL = "r.lavega@ideamos.com.ar";
 
 function doPost(e) {
   try {
@@ -23,7 +24,7 @@ function doPost(e) {
 }
 
 function getOrCreateSheet_() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = spreadsheet.getSheetByName(SHEET_NAME);
 
   if (!sheet) {
