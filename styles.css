@@ -165,7 +165,7 @@ h3 {
 h1 {
   font-size: clamp(2.2rem, 3vw, 3.35rem);
   line-height: 1.03;
-  max-width: 10ch;
+  max-width: 13ch;
   letter-spacing: -0.05em;
 }
 
@@ -238,7 +238,7 @@ h1 {
 
 .hero-showcase {
   display: grid;
-  grid-template-columns: 1.14fr 0.86fr;
+  grid-template-columns: 1.34fr 0.66fr;
   gap: 12px;
   align-items: center;
   padding: 18px;
@@ -292,7 +292,7 @@ h1 {
 }
 
 .hero-showcase__image {
-  width: min(100%, 164px);
+  width: min(100%, 150px);
   justify-self: center;
   filter: drop-shadow(0 28px 38px rgba(6, 35, 46, 0.2));
   animation: float-product 6s ease-in-out infinite;
