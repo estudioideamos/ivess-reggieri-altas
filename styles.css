@@ -294,6 +294,7 @@ h1 {
 .hero-showcase__image {
   width: min(100%, 150px);
   justify-self: center;
+  border-radius: 20px;
   filter: drop-shadow(0 28px 38px rgba(6, 35, 46, 0.2));
   animation: float-product 6s ease-in-out infinite;
 }
