@@ -34,20 +34,19 @@
       </div>
 
       <div class="hero-copy-block">
-        <p class="eyebrow">Solicitud guiada online</p>
-        <h1>Ingres&aacute; tu tel&eacute;fono y ped&iacute; tus bidones en segundos.</h1>
+        <p class="eyebrow">Clientes recurrentes</p>
+        <h1>Tu reposici&oacute;n en minutos: ingres&aacute; tu tel&eacute;fono y ped&iacute;.</h1>
         <p class="hero-copy">
-          Dise&ntilde;ado para clientes recurrentes: primero validamos tus datos
-          autom&aacute;ticamente y despu&eacute;s eleg&iacute;s cantidades y productos
-          con una experiencia clara, r&aacute;pida y premium.
+          Si ya sos cliente, este flujo est&aacute; pensado para vos: menos carga manual,
+          m&aacute;s rapidez y pedido listo en pocos pasos.
         </p>
       </div>
 
       <div class="hero-showcase hero-showcase--customers">
         <div class="hero-showcase__content">
-          <span class="hero-showcase__label">Flujo optimizado</span>
-          <strong>Menos carga manual, m&aacute;s velocidad de compra.</strong>
-          <p>Con un solo dato (tel&eacute;fono), el sistema recupera la informaci&oacute;n del cliente y acelera el pedido.</p>
+          <span class="hero-showcase__label">Pedido express</span>
+          <strong>Repet&iacute; tu pedido habitual sin volver a cargar todo.</strong>
+          <p>Ingres&aacute;s tu tel&eacute;fono, valid&aacute;s los datos y eleg&iacute;s tus bidones al instante.</p>
           <div class="hero-showcase__tags">
             <span>m&aacute;s simple</span>
             <span>m&aacute;s r&aacute;pido</span>
@@ -58,16 +57,16 @@
 
       <div class="hero-metrics">
         <article class="hero-metric">
-          <span class="hero-metric__value">Validaci&oacute;n autom&aacute;tica</span>
-          <span class="hero-metric__label">Datos recuperados desde tu base de clientes.</span>
+          <span class="hero-metric__value">Menos tiempo</span>
+          <span class="hero-metric__label">Tus datos se completan autom&aacute;ticamente con tu tel&eacute;fono.</span>
         </article>
         <article class="hero-metric">
-          <span class="hero-metric__value">Pedido guiado</span>
-          <span class="hero-metric__label">Selecci&oacute;n de productos y cantidades con total estimado.</span>
+          <span class="hero-metric__value">Pedido claro</span>
+          <span class="hero-metric__label">Eleg&iacute;s productos y cantidades con total estimado al momento.</span>
         </article>
         <article class="hero-metric">
           <span class="hero-metric__value">Entrega coordinada</span>
-          <span class="hero-metric__label">Tu pedido queda listo para confirmar fecha y franja de entrega.</span>
+          <span class="hero-metric__label">Tu pedido queda listo para confirmar fecha y horario de entrega.</span>
         </article>
       </div>
     </section>
@@ -99,8 +98,8 @@
 
       <form id="reorder-form" novalidate>
         <section class="step is-active" data-step="0">
-          <h3>Busc&aacute; tu cuenta por tel&eacute;fono</h3>
-          <p class="step-copy">Ingres&aacute; el n&uacute;mero registrado y validamos autom&aacute;ticamente tus datos para continuar.</p>
+          <h3>Encontr&aacute; tu cuenta con tu tel&eacute;fono</h3>
+          <p class="step-copy">Ingres&aacute; el n&uacute;mero con el que est&aacute;s registrado y continu&aacute; sin cargar datos otra vez.</p>
 
           <div class="customer-lookup">
             <label class="field">
@@ -111,13 +110,13 @@
               <span>Celular</span>
               <input id="lookup-phone" type="text" placeholder="0000-0000" inputmode="numeric" required>
             </label>
-            <button id="lookup-button" class="button button--lookup" type="button">Buscar mis datos</button>
+            <button id="lookup-button" class="button button--lookup" type="button">Buscar mi cuenta</button>
           </div>
 
           <p id="lookup-message" class="lookup-message" aria-live="polite"></p>
 
           <div id="customer-card" class="customer-card is-hidden">
-            <h4>Datos encontrados</h4>
+            <h4>Tus datos</h4>
             <div class="field-grid">
               <label class="field">
                 <span>Nombre</span>
@@ -148,13 +147,13 @@
 
           <label class="checkbox">
             <input id="customer-confirmed" type="checkbox" required>
-            <span>Confirmo que los datos corresponden al cliente que est&aacute; realizando el pedido.</span>
+            <span>Confirmo que estos datos son correctos para este pedido.</span>
           </label>
         </section>
 
         <section class="step" data-step="1">
-          <h3>Eleg&iacute; tus productos</h3>
-          <p class="step-copy">Ajust&aacute; cantidades y visualiz&aacute; el total estimado para este pedido de reposici&oacute;n.</p>
+          <h3>Eleg&iacute; tus bidones</h3>
+          <p class="step-copy">Ajust&aacute; cantidades y revis&aacute; el total estimado antes de confirmar.</p>
 
           <div class="plan-grid">
             <label class="plan-card">
@@ -220,8 +219,8 @@
         </section>
 
         <section class="step" data-step="2">
-          <h3>Confirm&aacute; el pedido</h3>
-          <p class="step-copy">Revis&aacute; la informaci&oacute;n del cliente y el producto elegido antes de enviar.</p>
+          <h3>Confirm&aacute; tu pedido</h3>
+          <p class="step-copy">Revis&aacute; tus datos y envi&aacute; el pedido para que podamos coordinar la entrega.</p>
           <div id="summary" class="summary-card" aria-live="polite"></div>
 
           <label class="checkbox">
@@ -235,7 +234,7 @@
         <div class="form-actions">
           <button id="back-button" class="button button--ghost" type="button">Volver</button>
           <button id="next-button" class="button" type="button">Continuar</button>
-          <button id="submit-button" class="button button--accent is-hidden" type="submit">Enviar pedido</button>
+          <button id="submit-button" class="button button--accent is-hidden" type="submit">Confirmar pedido</button>
         </div>
       </form>
     </section>

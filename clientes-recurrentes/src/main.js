@@ -90,13 +90,13 @@ form.addEventListener("submit", async (event) => {
 
   if (!submitResult.ok) {
     formMessage.textContent =
-      "No pudimos enviar el pedido en este momento. Intenta nuevamente o revisa la configuracion del Apps Script.";
+      "No pudimos enviar tu pedido en este momento. Intenta nuevamente en unos segundos.";
     formMessage.classList.remove("is-success");
     return;
   }
 
   formMessage.textContent =
-    "Pedido enviado correctamente. El equipo de Ivess Reggieri te va a contactar para confirmar entrega.";
+    "Listo. Recibimos tu pedido y te vamos a contactar para confirmar la entrega.";
   formMessage.classList.add("is-success");
 });
 
@@ -227,22 +227,22 @@ async function handleCustomerLookup() {
       customerData = null;
       customerCard.classList.add("is-hidden");
       lookupMessage.textContent =
-        "No encontramos ese telefono en la base. Revisa el numero o cargalo en la hoja de clientes.";
+        "No encontramos ese telefono. Revisalo o escribinos para ayudarte con la carga.";
       return;
     }
 
     customerData = result.customer;
     fillCustomerCard(customerData);
     customerCard.classList.remove("is-hidden");
-    lookupMessage.textContent = "Cliente encontrado. Ya podes continuar.";
+    lookupMessage.textContent = "Cuenta encontrada. Ya podes continuar con tu pedido.";
     lookupMessage.classList.add("is-success");
   } catch (_) {
     customerData = null;
     customerCard.classList.add("is-hidden");
-    lookupMessage.textContent = "No pudimos consultar la base ahora. Proba nuevamente.";
+    lookupMessage.textContent = "No pudimos validar tu cuenta ahora. Proba nuevamente en unos segundos.";
   } finally {
     lookupButton.disabled = false;
-    lookupButton.textContent = "Buscar mis datos";
+    lookupButton.textContent = "Buscar mi cuenta";
   }
 }
 

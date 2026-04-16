@@ -118,7 +118,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   formMessage.textContent =
-    "Solicitud enviada. Te vamos a contactar para confirmar cobertura y coordinar tu primera entrega.";
+    "Excelente, ya recibimos tu solicitud. En breve te contactamos para confirmar cobertura y coordinar tu primera entrega.";
   formMessage.classList.add("is-success");
 });
 
@@ -140,7 +140,7 @@ function renderStep() {
   nextButton.classList.toggle("is-hidden", currentStep === steps.length - 1);
   submitButton.classList.toggle("is-hidden", currentStep !== steps.length - 1);
   nextButton.textContent = nextLabels[currentStep] || "Continuar";
-  submitButton.textContent = "Enviar solicitud";
+  submitButton.textContent = "Quiero comenzar mi servicio";
 
   updateAllPlanCards();
 
