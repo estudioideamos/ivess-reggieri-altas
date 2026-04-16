@@ -188,7 +188,7 @@ h1 {
 .hero-metric {
   display: grid;
   gap: 6px;
-  padding: 14px 14px;
+  padding: 16px 16px;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.08);
@@ -228,11 +228,14 @@ h1 {
   font-family: "Sora", "Manrope", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
+  line-height: 1.3;
+  padding-right: 4px;
 }
 
 .hero-metric__label {
   font-size: 0.84rem;
   line-height: 1.45;
+  padding-right: 4px;
   color: rgba(245, 252, 255, 0.76);
 }
 
@@ -962,6 +965,29 @@ textarea:focus {
 
 .is-hidden {
   display: none;
+}
+
+.ideamos-credit {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(86, 113, 125, 0.9);
+}
+
+.ideamos-credit a {
+  color: var(--brand-deep);
+  font-weight: 800;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(12, 95, 125, 0.22);
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.ideamos-credit a:hover,
+.ideamos-credit a:focus-visible {
+  color: var(--brand);
+  border-color: rgba(11, 137, 185, 0.45);
 }
 
 @media (max-width: 1180px) {
