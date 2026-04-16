@@ -16,6 +16,7 @@ const addressSuggestions = document.querySelector("#address-suggestions");
 const appConfig = window.APP_CONFIG || {};
 const googleMapsApiKey = normalizeValue(appConfig.googleMapsApiKey || "");
 const googlePlacesCountry = normalizeValue(appConfig.googlePlacesCountry || "ar");
+const appsScriptUrl = normalizeValue(appConfig.appsScriptUrl || "");
 const nextLabels = [
   "Continuar",
   "Ver entrega",
@@ -99,15 +100,25 @@ nextButton.addEventListener("click", () => {
   renderStep();
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (!validateStep(currentStep)) {
     return;
   }
 
+  const data = getFormData();
+  const submitResult = await sendLeadToAppsScript(data);
+
+  if (!submitResult.ok) {
+    formMessage.textContent =
+      "No pudimos enviar la solicitud en este momento. Revisa la configuracion del Apps Script o intenta nuevamente.";
+    formMessage.classList.remove("is-success");
+    return;
+  }
+
   formMessage.textContent =
-    "Solicitud enviada. Nuestro equipo revisará tu pedido y te contactará para confirmar cobertura, propuesta y primera entrega.";
+    "Solicitud enviada. Nuestro equipo revisara tu pedido y te contactara para confirmar cobertura y primera entrega.";
   formMessage.classList.add("is-success");
 });
 
@@ -377,6 +388,38 @@ function escapeHtml(value) {
 
 function formatCurrency(value) {
   return currencyFormatter.format(value);
+}
+
+async function sendLeadToAppsScript(data) {
+  if (!appsScriptUrl) {
+    return { ok: false, error: "missing_apps_script_url" };
+  }
+
+  const payload = {
+    ...data,
+    submittedAt: new Date().toISOString(),
+    source: "ivess-reggieri-web",
+  };
+
+  try {
+    const response = await fetch(appsScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      mode: "cors",
+    });
+
+    if (!response.ok) {
+      return { ok: false, error: "request_failed" };
+    }
+
+    const result = await response.json().catch(() => ({ ok: true }));
+    return { ok: result.ok !== false };
+  } catch (_) {
+    return { ok: false, error: "network_error" };
+  }
 }
 
 async function initializeAddressAutocomplete() {
