@@ -13,6 +13,9 @@ const addressInput = document.querySelector("#address");
 const cityInput = document.querySelector("#city");
 const provinceInput = document.querySelector("#province");
 const addressSuggestions = document.querySelector("#address-suggestions");
+const appConfig = window.APP_CONFIG || {};
+const googleMapsApiKey = normalizeValue(appConfig.googleMapsApiKey || "");
+const googlePlacesCountry = normalizeValue(appConfig.googlePlacesCountry || "ar");
 const nextLabels = [
   "Continuar",
   "Ver entrega",
@@ -51,6 +54,10 @@ let suggestionItems = [];
 let activeSuggestionIndex = -1;
 let addressDebounceTimer = null;
 let addressAbortController = null;
+let addressProvider = "osm";
+let googleAutocompleteService = null;
+let googlePlacesService = null;
+let googlePlacesSessionToken = null;
 
 initializePlanCards();
 initializeAddressAutocomplete();
@@ -372,10 +379,12 @@ function formatCurrency(value) {
   return currencyFormatter.format(value);
 }
 
-function initializeAddressAutocomplete() {
+async function initializeAddressAutocomplete() {
   if (!addressInput || !addressSuggestions) {
     return;
   }
+
+  await initializeAddressProvider();
 
   addressInput.addEventListener("input", () => {
     const query = normalizeValue(addressInput.value);
@@ -388,7 +397,7 @@ function initializeAddressAutocomplete() {
     }
 
     addressDebounceTimer = window.setTimeout(() => {
-      fetchAddressSuggestions(query);
+      void fetchAddressSuggestions(query);
     }, 260);
   });
 
@@ -416,7 +425,7 @@ function initializeAddressAutocomplete() {
 
     if (event.key === "Enter" && activeSuggestionIndex >= 0) {
       event.preventDefault();
-      applyAddressSuggestion(suggestionItems[activeSuggestionIndex]);
+      void applyAddressSuggestion(suggestionItems[activeSuggestionIndex]);
       return;
     }
 
@@ -432,7 +441,61 @@ function initializeAddressAutocomplete() {
   });
 }
 
+async function initializeAddressProvider() {
+  if (!googleMapsApiKey) {
+    addressProvider = "osm";
+    return;
+  }
+
+  try {
+    await loadGoogleMapsPlacesScript(googleMapsApiKey);
+
+    if (!window.google?.maps?.places) {
+      addressProvider = "osm";
+      return;
+    }
+
+    googleAutocompleteService = new window.google.maps.places.AutocompleteService();
+    googlePlacesService = new window.google.maps.places.PlacesService(
+      document.createElement("div"),
+    );
+    googlePlacesSessionToken = new window.google.maps.places.AutocompleteSessionToken();
+    addressProvider = "google";
+  } catch (_) {
+    addressProvider = "osm";
+  }
+}
+
+function loadGoogleMapsPlacesScript(apiKey) {
+  if (window.google?.maps?.places) {
+    return Promise.resolve();
+  }
+
+  if (window.__googlePlacesScriptPromise) {
+    return window.__googlePlacesScriptPromise;
+  }
+
+  window.__googlePlacesScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src =
+      `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("google-maps-load-error"));
+    document.head.appendChild(script);
+  });
+
+  return window.__googlePlacesScriptPromise;
+}
+
 async function fetchAddressSuggestions(query) {
+  if (addressProvider === "google") {
+    const googleResults = await fetchGoogleAddressSuggestions(query);
+    renderAddressSuggestions(googleResults);
+    return;
+  }
+
   if (addressAbortController) {
     addressAbortController.abort();
   }
@@ -454,7 +517,7 @@ async function fetchAddressSuggestions(query) {
     }
 
     const results = await response.json();
-    renderAddressSuggestions(Array.isArray(results) ? results : []);
+    renderAddressSuggestions(mapOsmSuggestions(Array.isArray(results) ? results : []));
   } catch (error) {
     if (error.name === "AbortError") {
       return;
@@ -462,6 +525,71 @@ async function fetchAddressSuggestions(query) {
 
     clearAddressSuggestions();
   }
+}
+
+function fetchGoogleAddressSuggestions(query) {
+  if (!googleAutocompleteService || !window.google?.maps?.places) {
+    return Promise.resolve([]);
+  }
+
+  if (!googlePlacesSessionToken) {
+    googlePlacesSessionToken = new window.google.maps.places.AutocompleteSessionToken();
+  }
+
+  const request = {
+    input: query,
+    componentRestrictions: { country: googlePlacesCountry },
+    sessionToken: googlePlacesSessionToken,
+    types: ["address"],
+  };
+
+  return new Promise((resolve) => {
+    googleAutocompleteService.getPlacePredictions(request, (predictions, status) => {
+      if (
+        status !== window.google.maps.places.PlacesServiceStatus.OK ||
+        !Array.isArray(predictions)
+      ) {
+        resolve([]);
+        return;
+      }
+
+      resolve(
+        predictions.slice(0, 6).map((prediction) => {
+          const terms = prediction.terms || [];
+          const main =
+            prediction.structured_formatting?.main_text ||
+            prediction.description.split(",")[0] ||
+            "";
+          const secondary =
+            prediction.structured_formatting?.secondary_text ||
+            terms.slice(1).map((term) => term.value).join(", ");
+
+          return {
+            source: "google",
+            placeId: prediction.place_id,
+            description: prediction.description,
+            main,
+            secondary,
+          };
+        }),
+      );
+    });
+  });
+}
+
+function mapOsmSuggestions(items) {
+  return items.map((item) => {
+    const addressParts = parseOsmAddressParts(item);
+
+    return {
+      source: "osm",
+      address: item.address || {},
+      main: addressParts.main,
+      secondary: addressParts.secondary,
+      city: addressParts.city,
+      province: addressParts.province,
+    };
+  });
 }
 
 function renderAddressSuggestions(items) {
@@ -475,12 +603,10 @@ function renderAddressSuggestions(items) {
 
   addressSuggestions.innerHTML = items
     .map((item, index) => {
-      const addressParts = parseAddressParts(item);
-
       return `
         <button class="address-suggestions__item" type="button" data-suggestion-index="${index}">
-          <span class="address-suggestions__main">${escapeHtml(addressParts.main)}</span>
-          <span class="address-suggestions__secondary">${escapeHtml(addressParts.secondary)}</span>
+          <span class="address-suggestions__main">${escapeHtml(item.main || "")}</span>
+          <span class="address-suggestions__secondary">${escapeHtml(item.secondary || "")}</span>
         </button>
       `;
     })
@@ -497,7 +623,7 @@ function renderAddressSuggestions(items) {
         const selectedItem = suggestionItems[index];
 
         if (selectedItem) {
-          applyAddressSuggestion(selectedItem);
+          void applyAddressSuggestion(selectedItem);
         }
       });
     },
@@ -514,23 +640,99 @@ function updateActiveSuggestion() {
   });
 }
 
-function applyAddressSuggestion(item) {
-  const addressParts = parseAddressParts(item);
-
-  addressInput.value = addressParts.main;
-
-  if (cityInput && addressParts.city) {
-    cityInput.value = addressParts.city;
+async function applyAddressSuggestion(item) {
+  if (item.source === "google") {
+    await applyGoogleAddressSuggestion(item);
+    return;
   }
 
-  if (provinceInput && addressParts.province) {
-    provinceInput.value = addressParts.province;
+  addressInput.value = item.main || "";
+
+  if (cityInput && item.city) {
+    cityInput.value = item.city;
+  }
+
+  if (provinceInput && item.province) {
+    provinceInput.value = item.province;
   }
 
   clearAddressSuggestions();
 }
 
-function parseAddressParts(item) {
+async function applyGoogleAddressSuggestion(item) {
+  if (!googlePlacesService || !item.placeId || !window.google?.maps?.places) {
+    addressInput.value = item.main || item.description || "";
+    clearAddressSuggestions();
+    return;
+  }
+
+  const details = await fetchGooglePlaceDetails(item.placeId);
+  const parts = parseGooglePlaceDetails(details);
+
+  addressInput.value = parts.main || item.main || item.description || "";
+
+  if (cityInput && parts.city) {
+    cityInput.value = parts.city;
+  }
+
+  if (provinceInput && parts.province) {
+    provinceInput.value = parts.province;
+  }
+
+  googlePlacesSessionToken = new window.google.maps.places.AutocompleteSessionToken();
+  clearAddressSuggestions();
+}
+
+function fetchGooglePlaceDetails(placeId) {
+  return new Promise((resolve) => {
+    googlePlacesService.getDetails(
+      {
+        placeId,
+        fields: ["formatted_address", "address_components", "name"],
+        sessionToken: googlePlacesSessionToken,
+      },
+      (placeResult, status) => {
+        if (
+          status !== window.google.maps.places.PlacesServiceStatus.OK ||
+          !placeResult
+        ) {
+          resolve(null);
+          return;
+        }
+
+        resolve(placeResult);
+      },
+    );
+  });
+}
+
+function parseGooglePlaceDetails(placeResult) {
+  if (!placeResult) {
+    return { main: "", city: "", province: "" };
+  }
+
+  const components = placeResult.address_components || [];
+  const streetNumber = findAddressComponent(components, "street_number");
+  const route = findAddressComponent(components, "route");
+  const city =
+    findAddressComponent(components, "locality") ||
+    findAddressComponent(components, "administrative_area_level_2");
+  const province = findAddressComponent(components, "administrative_area_level_1");
+  const main = [route, streetNumber].filter(Boolean).join(" ").trim();
+
+  return {
+    main: main || placeResult.name || placeResult.formatted_address || "",
+    city: city || "",
+    province: province || "",
+  };
+}
+
+function findAddressComponent(components, type) {
+  const match = components.find((component) => component.types.includes(type));
+  return match ? match.long_name : "";
+}
+
+function parseOsmAddressParts(item) {
   const address = item.address || {};
   const street =
     address.road ||
