@@ -118,7 +118,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   formMessage.textContent =
-    "Solicitud enviada. Nuestro equipo revisara tu pedido y te contactara para confirmar cobertura y primera entrega.";
+    "Solicitud enviada. Te vamos a contactar para confirmar cobertura y coordinar tu primera entrega.";
   formMessage.classList.add("is-success");
 });
 
