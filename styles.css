@@ -192,6 +192,36 @@ h1 {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.hero-metric__icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #effcff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: icon-bob 4.8s ease-in-out infinite;
+}
+
+.hero-metric:nth-child(2) .hero-metric__icon {
+  animation-delay: 0.35s;
+}
+
+.hero-metric:nth-child(3) .hero-metric__icon {
+  animation-delay: 0.7s;
+}
+
+.hero-metric__icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .hero-metric__value {
   font-family: "Sora", "Manrope", sans-serif;
   font-size: 0.95rem;
@@ -426,6 +456,17 @@ h2 {
 
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@keyframes icon-bob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-3px) scale(1.02);
   }
 }
 

@@ -9,7 +9,33 @@ const nextButton = document.querySelector("#next-button");
 const submitButton = document.querySelector("#submit-button");
 const stepperItems = Array.from(document.querySelectorAll("[data-go-step]"));
 const planCards = Array.from(document.querySelectorAll(".plan-card"));
-const nextLabels = ["Continuar", "Seguir", "Ver entrega", "Revisar alta"];
+const nextLabels = [
+  "Continuar",
+  "Ver entrega",
+  "Elegir pedido",
+  "Revisar solicitud",
+];
+const serviceTypeLabels = {
+  hogar: "Hogar / departamento",
+  empresa: "Empresa / oficina",
+  barrio: "Barrio privado",
+};
+const propertyTypeLabels = {
+  casa: "Casa",
+  departamento: "Departamento",
+  oficina: "Oficina",
+  local: "Local comercial",
+};
+const timeSlotLabels = {
+  manana: "Mañana",
+  tarde: "Tarde",
+  completo: "Horario comercial",
+};
+const frequencyLabels = {
+  semanal: "Semanal",
+  quincenal: "Quincenal",
+  mensual: "Mensual",
+};
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
@@ -65,7 +91,7 @@ form.addEventListener("submit", (event) => {
   }
 
   formMessage.textContent =
-    "Solicitud enviada. El equipo de Ivess Reggieri puede contactarte por WhatsApp o email para confirmar cobertura y coordinar la primera entrega.";
+    "Solicitud enviada. Nuestro equipo revisará tu pedido y te contactará para confirmar cobertura, propuesta y primera entrega.";
   formMessage.classList.add("is-success");
 });
 
@@ -87,7 +113,7 @@ function renderStep() {
   nextButton.classList.toggle("is-hidden", currentStep === steps.length - 1);
   submitButton.classList.toggle("is-hidden", currentStep !== steps.length - 1);
   nextButton.textContent = nextLabels[currentStep] || "Continuar";
-  submitButton.textContent = "Solicitar alta";
+  submitButton.textContent = "Enviar solicitud";
 
   updateAllPlanCards();
 
@@ -165,33 +191,49 @@ function validateStep(stepNumber) {
 
 function renderSummary() {
   const data = getFormData();
+  const deliveryLine = [
+    getLabel(data.propertyType, propertyTypeLabels),
+    getLabel(data.timeSlot, timeSlotLabels),
+    getLabel(data.frequency, frequencyLabels),
+  ]
+    .filter((value) => value && value !== "No informado")
+    .join(" · ");
+  const referenceLine = data.notes
+    ? `
+      <div>
+        <dt>Acceso / referencias</dt>
+        <dd>${escapeHtml(data.notes)}</dd>
+      </div>
+    `
+    : "";
 
   summary.innerHTML = `
     <dl>
       <div>
-        <dt>Servicio</dt>
-        <dd>${data.serviceType}</dd>
+        <dt>Tipo de servicio</dt>
+        <dd>${getLabel(data.serviceType, serviceTypeLabels)}</dd>
       </div>
       <div>
-        <dt>Direccion</dt>
-        <dd>${data.address}, ${data.city}, ${data.province}</dd>
+        <dt>Dirección</dt>
+        <dd>${escapeHtml(data.address)}, ${escapeHtml(data.city)}, ${escapeHtml(data.province)}</dd>
       </div>
       <div>
-        <dt>Contacto</dt>
-        <dd>${data.firstName} ${data.lastName}</dd>
+        <dt>Contacto principal</dt>
+        <dd>${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}</dd>
       </div>
       <div>
-        <dt>Canal</dt>
-        <dd>${data.areaCode} ${data.phone} / ${data.email}</dd>
+        <dt>Canal de respuesta</dt>
+        <dd>${escapeHtml(data.areaCode)} ${escapeHtml(data.phone)} · ${escapeHtml(data.email)}</dd>
       </div>
       <div>
         <dt>Entrega</dt>
-        <dd>${data.propertyType || "No informado"} - ${data.timeSlot || "No informado"}</dd>
+        <dd>${deliveryLine || "A definir"}</dd>
       </div>
       <div>
-        <dt>Producto</dt>
-        <dd>${data.plan} x ${data.planQuantity}${data.planPrice ? ` - ${data.planPrice}` : ""}</dd>
+        <dt>Pedido inicial</dt>
+        <dd>${escapeHtml(data.plan)} x ${data.planQuantity}${data.planPrice ? ` · ${data.planPrice}` : ""}</dd>
       </div>
+      ${referenceLine}
     </dl>
   `;
 }
@@ -217,6 +259,9 @@ function getFormData() {
     email: normalizeValue(data.get("email")),
     propertyType: normalizeValue(data.get("propertyType")),
     timeSlot: normalizeValue(data.get("timeSlot")),
+    frequency: normalizeValue(data.get("frequency")),
+    unit: normalizeValue(data.get("unit")),
+    notes: normalizeValue(data.get("notes")),
     plan: selectedPlanInput?.dataset.label || normalizeValue(data.get("plan")),
     planQuantity,
     planPrice: planTotal > 0 ? formatCurrency(planTotal) : "",
@@ -295,6 +340,23 @@ function getQuantityValue(input) {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function getLabel(value, labels) {
+  if (!value) {
+    return "No informado";
+  }
+
+  return labels[value] || value;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function formatCurrency(value) {
