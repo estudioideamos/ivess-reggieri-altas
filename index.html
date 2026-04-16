@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Altas Automaticas | Ivess Reggieri</title>
+  <title>Alta Online | Ivess Reggieri</title>
   <meta
     name="description"
-    content="Solicita tu alta de servicio en Ivess Reggieri con un formulario simple, rapido y guiado."
+    content="Solicita tu alta de servicio en Ivess Reggieri con una experiencia clara, guiada y lista para convertir."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Outfit:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
     rel="stylesheet"
   >
   <link rel="stylesheet" href="./styles.css">
@@ -25,51 +25,60 @@
           src="./assets/images/logo-ivess-reggieri.png"
           alt="Logo Ivess Reggieri"
         >
-        <div class="brand-chip">Entrega programada premium</div>
+        <div class="brand-chip">Alta online asistida</div>
       </div>
 
       <div class="hero-copy-block">
-        <p class="eyebrow">Altas automaticas</p>
-        <h1>Una experiencia de alta clara, premium y lista para convertir.</h1>
+        <p class="eyebrow">Alta premium de servicio</p>
+        <h1>Tu alta, clara desde el primer click.</h1>
         <p class="hero-copy">
+          Pedi bidones para hogar, oficina o barrio cerrado con una experiencia
+          simple, elegante y pensada para transmitir mejor la calidad de la marca.
+          <!--
           Diseñada para que hogares, oficinas y barrios cerrados soliciten sus
           bidones IVESS Reggieri con una experiencia elegante, guiada y simple.
+          -->
         </p>
       </div>
 
       <div class="hero-showcase">
         <div class="hero-showcase__content">
-          <span class="hero-showcase__label">Coleccion principal</span>
-          <strong>Bidones retornables de 12L y 20L con entrega coordinada.</strong>
+          <span class="hero-showcase__label">Experiencia comercial</span>
+          <strong>Productos claros, cantidades visibles y una propuesta lista para convertir mejor.</strong>
           <p>
-            Presentacion visual premium, seleccion de cantidad y una propuesta
-            preparada para vender mejor desde la primera visita.
+            Cada bloque fue ordenado para que la persona entienda rapido que
+            pedir, cuanto llevar y como sigue el alta.
           </p>
+          <div class="hero-showcase__tags">
+            <span>Mas claridad</span>
+            <span>Mas confianza</span>
+            <span>Mas conversion</span>
+          </div>
         </div>
         <img
           class="hero-showcase__image"
-          src="./assets/images/bidon-20l.png"
-          alt="Bidon retornable IVESS Reggieri de 20 litros"
+          src="./assets/images/bidon-12l.jpg"
+          alt="Bidon retornable IVESS Reggieri"
         >
       </div>
 
-      <div class="hero-grid" aria-label="Beneficios del servicio">
-        <article class="hero-card">
-          <span class="hero-card__kicker">Cobertura</span>
-          <strong>Validacion de zona y coordinacion de entrega antes de cerrar el alta.</strong>
+      <div class="hero-metrics" aria-label="Beneficios destacados">
+        <article class="hero-metric">
+          <span class="hero-metric__value">En minutos</span>
+          <span class="hero-metric__label">Alta simple para hogar, oficina o barrio</span>
         </article>
-        <article class="hero-card">
-          <span class="hero-card__kicker">Marca</span>
-          <strong>Uso del logo oficial y assets propios para desplegar sin depender de terceros.</strong>
+        <article class="hero-metric">
+          <span class="hero-metric__value">12L y 20L</span>
+          <span class="hero-metric__label">Presentaciones retornables y opcion baja sodio</span>
         </article>
-        <article class="hero-card">
-          <span class="hero-card__kicker">Conversion</span>
-          <strong>Selector de cantidad, resumen final y un flujo listo para optimizar.</strong>
+        <article class="hero-metric">
+          <span class="hero-metric__value">WhatsApp directo</span>
+          <span class="hero-metric__label">Seguimiento comercial y coordinacion de entrega</span>
         </article>
       </div>
 
       <div class="hero-note">
-        <p>El sitio ya queda preparado para seguir iterando en GitHub y publicar cambios sin tocar el hosting final.</p>
+        <p>Una experiencia limpia transmite mejor la calidad de la marca y deja el alta lista para convertir desde la primera visita.</p>
       </div>
     </section>
 
@@ -109,20 +118,23 @@
       <form id="signup-form" novalidate>
         <section class="step is-active" data-step="0">
           <h3>&iquest;Donde queres recibir el servicio?</h3>
-          <p class="step-copy">Elegimos primero el tipo de alta para personalizar el resto del formulario.</p>
+          <p class="step-copy">Elegimos el contexto del pedido y la zona para que el equipo comercial responda con cobertura y propuesta correcta desde el inicio.</p>
 
           <div class="choice-grid">
             <label class="choice-card">
               <input type="radio" name="serviceType" value="hogar" checked>
-              <span>En mi casa / departamento</span>
+              <span class="choice-card__title">En mi casa / departamento</span>
+              <span class="choice-card__meta">Pensado para consumo familiar, personal o uso diario en el hogar.</span>
             </label>
             <label class="choice-card">
               <input type="radio" name="serviceType" value="empresa">
-              <span>En mi empresa / oficina</span>
+              <span class="choice-card__title">En mi empresa / oficina</span>
+              <span class="choice-card__meta">Ideal para recepcion, equipos de trabajo y puntos de consumo compartido.</span>
             </label>
             <label class="choice-card">
               <input type="radio" name="serviceType" value="barrio">
-              <span>Vivo en un barrio cerrado</span>
+              <span class="choice-card__title">Vivo en un barrio cerrado</span>
+              <span class="choice-card__meta">Preparado para coordinar acceso, guardia o referencias de ingreso.</span>
             </label>
           </div>
 
@@ -149,7 +161,7 @@
 
         <section class="step" data-step="1">
           <h3>Tus datos de contacto</h3>
-          <p class="step-copy">Necesitamos esta informacion para coordinar el alta y el primer envio.</p>
+          <p class="step-copy">Dejanos el contacto principal para confirmar cobertura, frecuencia y coordinar la primera entrega.</p>
 
           <div class="field-grid">
             <label class="field">
@@ -182,7 +194,7 @@
 
         <section class="step" data-step="2">
           <h3>Condiciones de entrega</h3>
-          <p class="step-copy">Con esto dejamos listo el circuito logistico y la mejor franja horaria.</p>
+          <p class="step-copy">Cuanto mas claro este el acceso, mas agil sale la primera entrega y mejor trabaja el equipo de reparto.</p>
 
           <div class="field-grid">
             <label class="field">
@@ -225,8 +237,8 @@
         </section>
 
         <section class="step" data-step="3">
-          <h3>Elegi tu producto inicial</h3>
-          <p class="step-copy">Selecciona el tipo de bidon y ajusta la cantidad como en un selector comercial. El total es de ejemplo y ayuda a visualizar mejor la eleccion.</p>
+          <h3>Elegi tu pedido inicial</h3>
+          <p class="step-copy">Selecciona la presentacion y ajusta la cantidad como en una compra guiada. Los totales son orientativos y ayudan a comparar mejor la propuesta.</p>
 
           <div class="plan-grid">
             <label class="plan-card">
@@ -241,12 +253,15 @@
               <span class="plan-card__badge">Mas elegido</span>
               <span class="plan-card__media">
                 <img
-                  src="./assets/images/bidon-12l.png"
+                  src="./assets/images/bidon-12l.jpg"
                   alt="Bidon IVESS Reggieri de 12 litros"
                 >
               </span>
               <span class="plan-card__title">Bidon Retornable 12 L</span>
+              <span class="plan-card__meta">Ideal para hogares, consultorios y consumos moderados con una reposicion comoda y prolija.</span>
+              <!--
               <span class="plan-card__meta">Agua purificada IVESS Reggieri para hogares, estudios y oficinas pequeñas.</span>
+              -->
               <span class="plan-card__unit-price">Desde $8.900 por unidad</span>
               <div class="quantity-picker">
                 <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon retornable 12 litros">-</button>
@@ -266,15 +281,15 @@
                 data-label="Bidon Retornable 20 L"
                 data-unit-price="11900"
               >
-              <span class="plan-card__badge">Precio ejemplo</span>
+              <span class="plan-card__badge">Mayor rendimiento</span>
               <span class="plan-card__media">
                 <img
-                  src="./assets/images/bidon-20l.png"
-                  alt="Bidon IVESS Reggieri de 20 litros"
+                  src="./assets/images/bidon-12l.jpg"
+                  alt="Bidon retornable IVESS Reggieri"
                 >
               </span>
               <span class="plan-card__title">Bidon Retornable 20 L</span>
-              <span class="plan-card__meta">La opcion mas rendidora para oficinas, recepciones y consumos intensivos.</span>
+              <span class="plan-card__meta">La opcion mas rendidora para oficinas, recepciones y puntos con consumo intensivo.</span>
               <span class="plan-card__unit-price">Desde $11.900 por unidad</span>
               <div class="quantity-picker">
                 <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon retornable 20 litros">-</button>
@@ -294,7 +309,7 @@
                 data-label="Bidon Bajo Sodio 12 L"
                 data-unit-price="9600"
               >
-              <span class="plan-card__badge">Linea saludable</span>
+              <span class="plan-card__badge">Bienestar</span>
               <span class="plan-card__media">
                 <img
                   src="./assets/images/bidon-12l-sodio.png"
@@ -302,7 +317,7 @@
                 >
               </span>
               <span class="plan-card__title">Bidon Bajo Sodio 12 L</span>
-              <span class="plan-card__meta">Presentacion premium para quienes priorizan un perfil mas liviano de sodio.</span>
+              <span class="plan-card__meta">Alternativa pensada para quienes priorizan una opcion baja en sodio sin resignar practicidad.</span>
               <span class="plan-card__unit-price">Desde $9.600 por unidad</span>
               <div class="quantity-picker">
                 <button class="quantity-picker__button" type="button" data-qty-action="decrease" aria-label="Disminuir cantidad del bidon bajo sodio 12 litros">-</button>
@@ -316,7 +331,7 @@
             </label>
           </div>
 
-          <p class="plan-note">Precios de ejemplo sujetos a zona de entrega, disponibilidad y frecuencia del servicio.</p>
+          <p class="plan-note">Importes de ejemplo sujetos a zona de entrega, disponibilidad, frecuencia, envase y condiciones comerciales vigentes.</p>
 
           <label class="checkbox">
             <input id="cooler" name="cooler" type="checkbox">
@@ -325,8 +340,8 @@
         </section>
 
         <section class="step" data-step="4">
-          <h3>Confirmacion final</h3>
-          <p class="step-copy">Revisa el resumen y envia la solicitud para que el equipo de Ivess Reggieri te contacte.</p>
+          <h3>Revisa y envia tu alta</h3>
+          <p class="step-copy">Verifica el resumen y envia la solicitud para que el equipo de Ivess Reggieri valide cobertura y te contacte.</p>
 
           <div id="summary" class="summary-card" aria-live="polite"></div>
 
@@ -341,7 +356,7 @@
         <div class="form-actions">
           <button id="back-button" class="button button--ghost" type="button">Volver</button>
           <button id="next-button" class="button" type="button">Continuar</button>
-          <button id="submit-button" class="button button--accent is-hidden" type="submit">Enviar solicitud</button>
+          <button id="submit-button" class="button button--accent is-hidden" type="submit">Solicitar alta</button>
         </div>
       </form>
     </section>

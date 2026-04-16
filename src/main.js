@@ -9,6 +9,7 @@ const nextButton = document.querySelector("#next-button");
 const submitButton = document.querySelector("#submit-button");
 const stepperItems = Array.from(document.querySelectorAll("[data-go-step]"));
 const planCards = Array.from(document.querySelectorAll(".plan-card"));
+const nextLabels = ["Continuar", "Seguir", "Ver entrega", "Revisar alta"];
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
@@ -63,11 +64,9 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  const data = getFormData();
   formMessage.textContent =
-    "Solicitud enviada. El equipo de Ivess Reggieri puede contactarte por WhatsApp para confirmar cobertura y coordinar el alta.";
+    "Solicitud enviada. El equipo de Ivess Reggieri puede contactarte por WhatsApp o email para confirmar cobertura y coordinar la primera entrega.";
   formMessage.classList.add("is-success");
-  console.table(data);
 });
 
 function renderStep() {
@@ -87,6 +86,8 @@ function renderStep() {
   backButton.disabled = currentStep === 0;
   nextButton.classList.toggle("is-hidden", currentStep === steps.length - 1);
   submitButton.classList.toggle("is-hidden", currentStep !== steps.length - 1);
+  nextButton.textContent = nextLabels[currentStep] || "Continuar";
+  submitButton.textContent = "Solicitar alta";
 
   updateAllPlanCards();
 
