@@ -112,11 +112,13 @@ body::after {
 
 .brand-logo {
   width: auto;
-  max-width: 152px;
-  max-height: 40px;
+  max-width: 176px;
+  max-height: 52px;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 14px 24px rgba(6, 35, 46, 0.14));
+  filter:
+    drop-shadow(0 14px 24px rgba(6, 35, 46, 0.24))
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.08));
 }
 
 .brand-chip {
