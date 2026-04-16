@@ -13,6 +13,11 @@
 
 .stepper--3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 8px;
+}
+
+.page-shell--customers .step h3 {
+  margin-top: 10px;
 }
 
 .customer-lookup {
