@@ -743,7 +743,7 @@ h2 {
   font-size: 0.95rem;
 }
 
-input,
+input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
   width: 100%;
@@ -756,7 +756,7 @@ textarea {
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-input:focus,
+input:not([type="checkbox"]):not([type="radio"]):focus,
 select:focus,
 textarea:focus {
   outline: none;
@@ -766,7 +766,7 @@ textarea:focus {
 
 .checkbox {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   margin-top: 22px;
   padding: 16px 18px;
@@ -776,11 +776,21 @@ textarea:focus {
 }
 
 .checkbox input {
-  margin: 2px 0 0;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
   flex: 0 0 auto;
 }
 
 .checkbox span {
+  flex: 1;
+  min-width: 0;
   line-height: 1.5;
 }
 
