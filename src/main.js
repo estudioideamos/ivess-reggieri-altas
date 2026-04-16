@@ -414,6 +414,23 @@ async function sendLeadToAppsScript(data) {
     });
     return { ok: true };
   } catch (_) {
+    // Some browser extensions/privacy settings can block cross-origin fetch.
+    // `sendBeacon` is a resilient fallback for fire-and-forget lead delivery.
+    if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
+      try {
+        const beaconPayload = new Blob([JSON.stringify(payload)], {
+          type: "text/plain;charset=UTF-8",
+        });
+        const beaconAccepted = navigator.sendBeacon(appsScriptUrl, beaconPayload);
+
+        if (beaconAccepted) {
+          return { ok: true };
+        }
+      } catch (_) {
+        // Continue to error response below.
+      }
+    }
+
     return { ok: false, error: "network_error" };
   }
 }
